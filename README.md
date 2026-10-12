@@ -1,6 +1,6 @@
 # Detección de daños sintéticos en fotos de siniestros automotores
 
-> 🚧 **Proyecto en desarrollo.** Etapa actual: pipeline de datos completo y dataset piloto armado. Hubo una corrida de entrenamiento de prueba sobre el piloto; el próximo paso es escalar el dataset para entrenar y evaluar en serio.
+> 🚧 **Proyecto en desarrollo.** Etapa actual: pipeline de datos completo y dataset piloto armado. El próximo paso es escalar el dataset para entrenar y evaluar el modelo.
 
 Proyecto personal de visión por computadora para detectar fotos de vehículos manipuladas con IA generativa, con aplicación al triaje de siniestros automotores.
 
@@ -73,7 +73,6 @@ El detalle técnico completo está en [`docs/especificacion_tecnica.md`](docs/es
 - [x] Pipeline de generación de imágenes manipuladas con controles
 - [x] Dataset piloto con trazabilidad completa y detector de atajos
 - [ ] Escalar el dataset (cientos o miles de imágenes por clase)
-- [x] Corrida de entrenamiento de prueba sobre el piloto
 - [ ] Entrenamiento y evaluación de ConvNeXt-Tiny con el dataset escalado
 - [ ] Evaluación con un generador no visto en el entrenamiento
 - [ ] Grad-CAM y prototipo en Streamlit
