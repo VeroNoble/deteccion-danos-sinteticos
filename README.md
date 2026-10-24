@@ -1,6 +1,6 @@
 # Detección de daños sintéticos en fotos de siniestros automotores
 
-> 🚧 **Proyecto en desarrollo.** Etapa actual: pipeline de datos completo y dataset piloto armado. El próximo paso es escalar el dataset para entrenar y evaluar el modelo.
+> 🚧 **Proyecto en desarrollo.** Etapa actual: pipeline de datos y notebook de entrenamiento listos; dataset piloto armado. El próximo paso es escalar el dataset y entrenar el modelo.
 
 Proyecto personal de visión por computadora para detectar fotos de vehículos manipuladas con IA generativa, con aplicación al triaje de siniestros automotores.
 
@@ -40,14 +40,16 @@ El dataset piloto tiene **23 imágenes** (11 auténticas y 12 manipuladas). Los 
 | [`01_fotos_reales.ipynb`](notebooks/01_fotos_reales.ipynb) | Descarga fotos reales de autos (sanos y con daño) desde Wikimedia Commons, registra autor y licencia, y las lleva a un formato común |
 | [`02_fotos_falsas.ipynb`](notebooks/02_fotos_falsas.ipynb) | Genera las imágenes manipuladas con modelos de difusión: daño agregado, controles sin daño y autos 100% sintéticos |
 | [`03_unificar_dataset.ipynb`](notebooks/03_unificar_dataset.ipynb) | Aplica la misma compresión JPEG a todas, arma el dataset final y corre el detector de atajos |
+| [`04_entrenamiento_convnext.ipynb`](notebooks/04_entrenamiento_convnext.ipynb) | Entrena ConvNeXt-Tiny con recortes en resolución original y lo evalúa: acierto por tipo y por generador, robustez a la compresión JPEG, Grad-CAM contra las máscaras de edición y semáforo |
 
 Los notebooks se desarrollaron en Google Colab (GPU T4).
 
-## Arquitectura planificada
+## Arquitectura del modelo
 
 - **Modelo:** ConvNeXt-Tiny preentrenado (PyTorch + `timm`), clasificación binaria auténtica / manipulada.
+- **Entrada por recortes:** el modelo ve recortes de 256×256 **sin redimensionar** la foto. En entrenamiento, el recorte de cada foto editada cae sobre la zona editada (según su máscara) y el de su foto original, en la misma zona sin editar. En evaluación, la foto se divide en 6 recortes y vale el más sospechoso.
 - **Aumento de datos:** `albumentations`, incluyendo compresión JPEG agresiva para simular fotos enviadas por WhatsApp.
-- **Explicabilidad:** Grad-CAM, para mostrarle al perito qué zona de la foto marcó el modelo.
+- **Explicabilidad:** Grad-CAM, para mostrarle al perito qué zona de la foto marcó el modelo. Como se conoce la máscara de cada edición, se mide si el mapa de calor apunta a la zona editada.
 - **Prototipo de uso:** tablero en Streamlit con un esquema de semáforo.
 
 | Semáforo | Probabilidad de manipulación | Acción |
@@ -62,9 +64,8 @@ El detalle técnico completo está en [`docs/especificacion_tecnica.md`](docs/es
 
 ## Decisiones abiertas
 
-- **Resolución de entrada.** La zona editada ocupa entre el 3% y el 8% de la imagen. Redimensionar la foto completa a 256x256 borra justo el ruido fino que el modelo necesita analizar, así que se evalúa trabajar con recortes (*parches*) en la resolución original.
 - **Partición sin fuga de datos.** Todas las versiones derivadas de una misma foto base van del mismo lado de la partición (train o test), usando `base_id`.
-- **Detector de atajos.** Hoy solo avisa si el AUC supera 0,60, pero un AUC muy por debajo de 0,5 también revela un atajo (la clase se adivina "al revés"). En el piloto dio 0,20 con los metadatos de codificación; con 23 imágenes es probablemente ruido, pero la condición correcta es controlar la distancia a 0,5.
+- **Fotos de otro tamaño.** Las fotos nuevas se llevan a 768×512; ese reescalado altera el ruido fino. Falta probar con fotos de celular de alta resolución.
 - **Métricas.** Recall y precision sobre la clase manipulada y curva precision-recall, evaluando por separado imágenes muy comprimidas y de generadores que el modelo no vio durante el entrenamiento.
 
 ## Hoja de ruta
@@ -72,6 +73,8 @@ El detalle técnico completo está en [`docs/especificacion_tecnica.md`](docs/es
 - [x] Especificación técnica del sistema
 - [x] Pipeline de generación de imágenes manipuladas con controles
 - [x] Dataset piloto con trazabilidad completa y detector de atajos
+- [x] Notebook de entrenamiento y evaluación (recortes, Grad-CAM contra máscaras, robustez JPEG)
+- [x] Detector de atajos controla la distancia del AUC a 0,5 en ambos sentidos
 - [ ] Escalar el dataset (cientos o miles de imágenes por clase)
 - [ ] Entrenamiento y evaluación de ConvNeXt-Tiny con el dataset escalado
 - [ ] Evaluación con un generador no visto en el entrenamiento
@@ -81,7 +84,7 @@ El detalle técnico completo está en [`docs/especificacion_tecnica.md`](docs/es
 
 **Pipeline de datos:** Python · PyTorch · diffusers (Stable Diffusion) · OpenCV · Pillow · pandas · scikit-learn
 
-**Modelo (en desarrollo):** timm (ConvNeXt) · albumentations · pytorch-grad-cam · Streamlit
+**Modelo:** timm (ConvNeXt) · albumentations · pytorch-grad-cam · Streamlit (pendiente)
 
 ## Nota sobre los datos
 

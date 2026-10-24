@@ -10,3 +10,6 @@ pandas
 scikit-learn
 matplotlib
 requests
+timm
+albumentations
+grad-cam
