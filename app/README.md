@@ -19,15 +19,31 @@ El notebook 04 guarda en `04_modelo/` del Drive dos archivos: `config.json` y `m
 
 Así el código puede ser público sin publicar el modelo entrenado.
 
-## Correrla en la compu
+## Correrla en la compu (Windows con Anaconda)
 
-```bash
-pip install -r app/requirements.txt
-# copiar config.json y mejor_modelo.pt a app/modelo/
-streamlit run app/app.py
+**Una sola vez:**
+
+1. **Bajar el código:** en GitHub, botón verde *Code → Download ZIP*. Descomprimirlo, por ejemplo en `Documentos\deteccion-danos-sinteticos`.
+2. **Bajar el modelo:** del Drive, carpeta `deteccion-fraude-v2/04_modelo_v2`, descargar `config.json` y `mejor_modelo.pt` (111 MB). Crear la carpeta `app\modelo` dentro del proyecto y copiar ahí los dos archivos.
+3. **Instalar las librerías:** abrir el **Anaconda Prompt** y escribir (cambiando la ruta por la tuya):
+
+   ```
+   cd Documentos\deteccion-danos-sinteticos
+   pip install -r app\requirements.txt
+   ```
+
+   Tarda unos minutos (PyTorch pesa varios cientos de MB).
+
+**Cada vez que la quieras usar:** en el Anaconda Prompt,
+
+```
+cd Documentos\deteccion-danos-sinteticos\app
+abrir_app.bat
 ```
 
-Se abre en el navegador, en `http://localhost:8501`.
+Se abre sola en el navegador, en `http://localhost:8501`. Para cerrarla, cerrar la ventana del Anaconda Prompt. Funciona sin internet una vez instalada, y las fotos nunca salen de la compu.
+
+En Mac o Linux: `pip install -r app/requirements.txt` y después `streamlit run app/app.py`.
 
 ## Publicarla en Hugging Face Spaces
 
