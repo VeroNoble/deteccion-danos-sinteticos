@@ -39,6 +39,8 @@ El Space gratuito no tiene GPU: cada foto tarda unos segundos, alcanza para una 
 
 ## Cuidados
 
+- **Las fotos no se guardan:** la app las analiza en memoria y no las escribe en disco ni en registros; se descartan al terminar la sesión. Si la app corre en un servidor externo (por ejemplo Hugging Face), la foto igual viaja hasta ese servidor mientras se analiza.
+
 - Es un prototipo de estudio entrenado con fotos públicas: los umbrales no están calibrados para uso real.
 - El modelo **no rechaza siniestros**: prioriza qué fotos revisar.
 - No usar la versión pública con fotos de siniestros reales: contienen datos personales (patentes, caras). Para eso, correrla en un entorno interno.

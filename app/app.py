@@ -60,6 +60,8 @@ with st.sidebar:
     st.caption("No subas fotos con datos personales de terceros (patentes, caras) ni fotos de siniestros reales.")
 
 archivo = st.file_uploader("Foto del auto", type=["jpg", "jpeg", "png", "webp"])
+st.caption("🔒 Las fotos no se guardan: se analizan en memoria y se descartan al cerrar la página o subir otra. "
+           "Otras personas que usen la app no pueden verlas.")
 if archivo is None:
     st.info("Esperando una foto. Funciona mejor con fotos apaisadas donde el auto se vea entero.")
     st.stop()
