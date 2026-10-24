@@ -1,0 +1,9 @@
+streamlit
+torch
+timm
+grad-cam
+numpy
+pandas
+pillow
+matplotlib
+huggingface_hub

@@ -5,3 +5,8 @@ __pycache__/
 *.jpg
 *.jpeg
 *.png
+
+# Modelo entrenado: nunca se versiona
+app/modelo/
+*.pt
+*.pth

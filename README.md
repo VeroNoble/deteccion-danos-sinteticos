@@ -50,7 +50,7 @@ Los notebooks se desarrollaron en Google Colab (GPU T4).
 - **Entrada por recortes:** el modelo ve recortes de 256×256 **sin redimensionar** la foto. En entrenamiento, el recorte de cada foto editada cae sobre la zona editada (según su máscara) y el de su foto original, en la misma zona sin editar. En evaluación, la foto se divide en 6 recortes y vale el más sospechoso.
 - **Aumento de datos:** `albumentations`, incluyendo compresión JPEG agresiva para simular fotos enviadas por WhatsApp.
 - **Explicabilidad:** Grad-CAM, para mostrarle al perito qué zona de la foto marcó el modelo. Como se conoce la máscara de cada edición, se mide si el mapa de calor apunta a la zona editada.
-- **Prototipo de uso:** tablero en Streamlit con un esquema de semáforo.
+- **Prototipo de uso:** tablero en Streamlit con un esquema de semáforo, en [`app/`](app/): se sube una foto y devuelve la probabilidad, el semáforo y el mapa de calor.
 
 | Semáforo | Probabilidad de manipulación | Acción |
 | --- | --- | --- |
@@ -78,7 +78,8 @@ El detalle técnico completo está en [`docs/especificacion_tecnica.md`](docs/es
 - [ ] Escalar el dataset (cientos o miles de imágenes por clase)
 - [ ] Entrenamiento y evaluación de ConvNeXt-Tiny con el dataset escalado
 - [ ] Evaluación con un generador no visto en el entrenamiento
-- [ ] Grad-CAM y prototipo en Streamlit
+- [x] Prototipo en Streamlit (probado con un modelo de prueba)
+- [ ] Publicar la demo con el modelo entrenado
 
 ## Herramientas
 
