@@ -95,3 +95,25 @@ a un perito interno para inspección visual del mapa de calor.
 • Alto Riesgo (P_IA \>= 70% - Semáforo Rojo): Fuerte correlación con
 artefactos de difusión/inpainting. Se interrumpe la liquidación y se
 exige peritaje presencial o videoperitaje en vivo.
+
+# 6. Resultados de la Versión 2 (octubre 2026)
+
+Evaluación sobre 141 imágenes de test no vistas (41 auténticas, 100 manipuladas), separadas por foto de origen:
+
+| Métrica | Valor |
+| --- | --- |
+| AUC ROC | 0,78 |
+| AUC precision-recall | 0,91 |
+| Recall (manipuladas, corte 0,5) | 83 % |
+| Precisión | 81 % |
+| AUC con JPEG calidad 30 | 0,69 |
+
+Hallazgos principales:
+
+• Grad-CAM concentra unas 7 veces más activación en la zona editada que en el resto de la imagen.
+
+• Con recortes de las fotos reales tomados la mitad de las veces al azar (`GUIADO_REALES = 0.5`), las falsas alarmas en fotos reales sin daño bajaron del 71 % al 46 %.
+
+• Con ediciones de Gemini y ChatGPT (generadores no vistos), 16 de 20 dieron rojo, pero el reescalado por sí solo hizo que 8 de 19 fotos reales sin editar dieran alerta. El próximo entrenamiento debe incluir fotos reales reescaladas como auténticas.
+
+El detalle completo está en el README del repositorio.
